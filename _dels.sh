@@ -1,16 +1,20 @@
+#!/bin/sh
+
 #1、---------------------------------------------------------------------
 echo "删除不用的帐号和组"
 echo "delete unused users and grups"
 for i in lp sync shutdown halt news uucp operator games gopher
 do
 echo "will delete user $i"
-userdel $i
+echo $i >> _delusr.fi
+#userdel $i
 echo "user $i have delete"
 done
 for i in lp sync shutdown halt news uucp operator games gopher
 do
 echo "will delete group $i"
-groupdel $i
+echo $i >> _delgroup.fi
+#groupdel $i
 echo "group $i have delete"
 done
 date=`date +%F`
@@ -51,7 +55,7 @@ echo "Check if the system have other user's id is 0"
 echo "#-------------------------------------"
 mesg=`awk -F: '($3 == 0) { print $1 }' /etc/passwd|grep -v root`
 if [ -z $mesg ]
-then 
+then
 echo "There don't have other user uid=0"
 else
 echo
@@ -352,7 +356,7 @@ fi
 echo "#禁用不必要的服务"
 echo "Stop unuseing services"
 echo "#-------------------------------------"
-list="avahi-daemon bluetooth cups firstboot hplip ip6tables iptables iscsi iscsid isdn kudzu pcscd rhnsd rhsmcertd rpcgssd rpcidmapd sendmail smartd  yum-updatesd netfs portmap autofs nfslock nfs"
+list="avahi-daemon bluetooth cups firstboot hplip iscsi iscsid isdn kudzu pcscd rhnsd rhsmcertd rpcgssd rpcidmapd sendmail smartd  yum-updatesd netfs portmap autofs nfslock nfs"
 for i in $list
 do
 chkconfig $i off
